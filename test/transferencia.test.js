@@ -5,10 +5,13 @@ const { obterToken } = require('../helpers/autenticacao.js')
 
 describe('Transferencias', () => {
     describe('POST /transferencias', () => {
-        it('Deve retornar sucesso com 201 quando o valor da transferência for acima ou igual a R$10,00', async () => {
-            //capturar o token
-            const token = await obterToken('julio.lima', '123456')       
+        let token
+         //capturar o token
+        beforeEach( async () => {
+            token = await obterToken('julio.lima', '123456') 
+        })
 
+        it('Deve retornar sucesso com 201 quando o valor da transferência for acima ou igual a R$10,00', async () => {
             const resposta = await request('http://localhost:3000')
                 .post('/transferencias')
                 .set('Content-Type', 'application/json')
@@ -26,9 +29,6 @@ describe('Transferencias', () => {
         })
 
         it('Deve retornar 422 quando o valor da transferência for abaixo de R$10,00', async () => {
-             //capturar o token
-            const token = await obterToken('julio.lima', '123456')          
-
             const resposta = await request('http://localhost:3000')
                 .post('/transferencias')
                 .set('Content-Type', 'application/json')
